@@ -12,6 +12,9 @@ namespace Lab1.Data
     /// </summary>
     class StandartBase : IStandartBase
     {
-        public bool[,] Matrix { get; set; } 
+        public bool[,] Matrix { get; set; }
+        public int MatrixHeight { get; set; }
+        public int MatrixWidth { get; set; } 
+        
     }
 }

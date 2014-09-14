@@ -11,7 +11,7 @@ namespace Lab1.Helpers
         {
             lock (syncLock)
             {
-                return random.Next(min, max+1);
+                return random.Next(min, max);
             }
         }
     }
