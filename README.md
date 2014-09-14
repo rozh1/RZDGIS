@@ -1,5 +1,7 @@
 # Лабораторные работы по распознаванию и защите данных в геоинформационных системах
 
+Статус сборки: [![Build status](https://ci.appveyor.com/api/projects/status/fad8xlil0ylr8i99)](https://ci.appveyor.com/project/rozh1/rzdgis)
+
 ## Лабораторная 1
 
 ### Цель работы: 
