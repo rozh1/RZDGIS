@@ -28,10 +28,13 @@ namespace Lab1
         {
             var standarts = new List<Standart>(Constants.StandartResourseNames.Length);
 
-            foreach (string standartResourseName in Constants.StandartResourseNames)
+            for(int i=0; i< Constants.StandartResourseNames.Length; i++)
             {
+                string standartResourseName = Constants.StandartResourseNames[i];
                 var bmp = (Bitmap) Lab1.Standarts.ResourceManager.GetObject(standartResourseName);
-                standarts.Add(InitStandart(bmp));
+                var standart = InitStandart(bmp);
+                standart.Symbol = Constants.StandartSymbols[i];
+                standarts.Add(standart);
             }
 
             return standarts.ToArray();

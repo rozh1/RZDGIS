@@ -15,5 +15,11 @@ namespace Lab1
             "standart_3",
         };
 
+        public static string[] StandartSymbols = new[]
+        {
+            "1",
+            "2",
+            "3",
+        };
     }
 }

@@ -19,5 +19,6 @@ namespace Lab1.Data
 
         public Mask Mask { get; set; }
         public IdealStandart IdealStandart { get; set; }
+        public string Symbol { get; set; }
     }
 }
