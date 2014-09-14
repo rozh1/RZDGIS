@@ -4,6 +4,7 @@
     {
         static void Main(string[] args)
         {
+            StandartsLoader standartsLoader = new StandartsLoader();
         }
     }
 }
