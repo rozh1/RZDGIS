@@ -75,12 +75,12 @@ namespace Lab1
                 for (int j = 0; j < standart.IdealStandart.MatrixHeight; j++)
                 {
                     Color col;
-                    //if (standart.Mask.Matrix[i, j])
-                    //{
-                    //    int randomNumber = RandomHelper.RandomNumber(0, 1000);
-                    //    col = randomNumber > 500 ? Color.Black : Color.White;
-                    //}
-                    //else
+                    if (standart.Mask.Matrix[i, j])
+                    {
+                        int randomNumber = RandomHelper.RandomNumber(0, 1000);
+                        col = randomNumber > 500 ? Color.Black : Color.White;
+                    }
+                    else
                     {
                         col = standart.IdealStandart.Matrix[i,j] ? Color.Black : Color.White;
                     }
