@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
+using System.Drawing.Imaging;
 using System.Threading.Tasks;
 using Lab1.Data;
 using Lab1.Helpers;
 
 namespace Lab1
 {
-    class ImageGenerator
+    internal class ImageGenerator
     {
-        private Data.Standarts _standarts;
-        private Bitmap _bitmap;
+        private readonly Data.Standarts _standarts;
 
         public ImageGenerator(Data.Standarts standarts)
         {
@@ -21,10 +18,10 @@ namespace Lab1
 
         public Bitmap GenerateImage(int objectCount)
         {
-            var standrtObjects = GenerateRandomStandartSequence(objectCount);
+            Standart[] standrtObjects = GenerateRandomStandartSequence(objectCount);
             double rowObjectCount = Math.Round(Math.Sqrt(objectCount));
-            var rows = (int)rowObjectCount;
-            if ((rowObjectCount-rows)%10 > 0) rows++;
+            var rows = (int) rowObjectCount;
+            if ((rowObjectCount - rows)%10 > 0) rows++;
 
             int objectMaxHeight = 0;
             int objectMaxWidth = 0;
@@ -37,7 +34,7 @@ namespace Lab1
                     objectMaxWidth = standart.IdealStandart.MatrixWidth;
             }
 
-            Bitmap image = new Bitmap(objectMaxWidth * rows, objectMaxHeight * rows);
+            var image = new Bitmap(objectMaxWidth*rows, objectMaxHeight*rows);
             Graphics g = Graphics.FromImage(image);
 
             for (int i = 0; i < rows; i++)
@@ -46,8 +43,8 @@ namespace Lab1
                 {
                     if (i*rows + j < objectCount)
                     {
-                        Standart standart = standrtObjects[i * rows + j];
-                        g.DrawImageUnscaled(GenerateBitmapFromStandart(standart),j*objectMaxWidth,i*objectMaxHeight);
+                        Standart standart = standrtObjects[i*rows + j];
+                        g.DrawImageUnscaled(GenerateBitmapFromStandart(standart), j*objectMaxWidth, i*objectMaxHeight);
                     }
                 }
             }
@@ -55,9 +52,9 @@ namespace Lab1
             return image;
         }
 
-        Data.Standart[] GenerateRandomStandartSequence(int length)
+        private Standart[] GenerateRandomStandartSequence(int length)
         {
-            var standartObjects = new Data.Standart[length];
+            var standartObjects = new Standart[length];
             for (int i = 0; i < length; i++)
             {
                 standartObjects[i] = _standarts.StandartConstants[
@@ -66,27 +63,58 @@ namespace Lab1
             return standartObjects;
         }
 
-        Bitmap GenerateBitmapFromStandart(Data.Standart standart)
+        private Bitmap GenerateBitmapFromStandart(Standart standart)
         {
-            var bmp = new Bitmap(standart.IdealStandart.MatrixWidth,standart.IdealStandart.MatrixHeight);
-            Graphics g = Graphics.FromImage(bmp);
-            for (int i = 0; i < standart.IdealStandart.MatrixWidth; i++)
+            var bmp = new Bitmap(standart.IdealStandart.MatrixWidth, standart.IdealStandart.MatrixHeight);
+            Graphics.FromImage(bmp).FillRectangle(
+                new SolidBrush(Color.White), 
+                0, 0, standart.IdealStandart.MatrixWidth, standart.IdealStandart.MatrixHeight);
+
+            unsafe
             {
-                for (int j = 0; j < standart.IdealStandart.MatrixHeight; j++)
+                BitmapData bitmapData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
+
+                int bytesPerPixel = System.Drawing.Image.GetPixelFormatSize(bmp.PixelFormat) / 8;
+                int heightInPixels = bitmapData.Height;
+                int widthInBytes = bitmapData.Width * bytesPerPixel;
+                byte* ptrFirstPixel = (byte*)bitmapData.Scan0;
+
+                Parallel.For((long) 0, heightInPixels, y =>
                 {
-                    Color col;
-                    if (standart.Mask.Matrix[i, j])
+                    byte* currentLine = ptrFirstPixel + (y * bitmapData.Stride);
+                    for (int x = 0, cell = 0; x < widthInBytes; x = x + bytesPerPixel, cell++)
                     {
-                        int randomNumber = RandomHelper.RandomNumber(0, 1000);
-                        col = randomNumber > 500 ? Color.Black : Color.White;
+                        int blue = 0;
+                        int green = 0;
+                        int red = 0;
+
+                        if (standart.Mask.Matrix[cell, y])
+                        {
+                            int randomNumber = RandomHelper.RandomNumber(0, 1000);
+                            if (randomNumber < 500)
+                            {
+                                blue = 255;
+                                green = 255;
+                                red = 255;
+                            }
+                        }
+                        else
+                        {
+                            if (!standart.IdealStandart.Matrix[cell, y])
+                            {
+                                blue = 255;
+                                green = 255;
+                                red = 255;
+                            }
+                        }
+                        currentLine[x] = (byte)blue;
+                        currentLine[x + 1] = (byte)green;
+                        currentLine[x + 2] = (byte)red;
                     }
-                    else
-                    {
-                        col = standart.IdealStandart.Matrix[i,j] ? Color.Black : Color.White;
-                    }
-                    bmp.SetPixel(i,j,col);
-                }
+                });
+                bmp.UnlockBits(bitmapData);
             }
+
             return bmp;
         }
     }

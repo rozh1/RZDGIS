@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -42,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComandLineParamsParser\Parser.cs" />
+    <Compile Include="ComandLineParamsParser\Switchs.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Data\IdealStandart.cs" />
     <Compile Include="Data\Image.cs" />
@@ -52,7 +55,6 @@
     <Compile Include="Interfaces\IStandartBase.cs" />
     <Compile Include="Data\Mask.cs" />
     <Compile Include="Data\StandartBase.cs" />
-    <Compile Include="Data\TriStandart.cs" />
     <Compile Include="Processor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

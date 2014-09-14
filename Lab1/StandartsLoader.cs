@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Lab1.Data;
 
 namespace Lab1
@@ -50,44 +49,30 @@ namespace Lab1
             mask.Matrix = new bool[bmp.Width, bmp.Height];
             mask.MatrixHeight = bmp.Height;
             mask.MatrixWidth = bmp.Width;
-
-            for (int i = 0; i < bmp.Height; i++)
+            
+            unsafe
             {
-                for (int j = 0; j < bmp.Width; j++)
-                {
-                    Color col = bmp.GetPixel(j, i);
-                    
-                    idealStandart.Matrix[j, i] = col.B + col.G + col.R == 0;
-                    mask.Matrix[j, i] = col.R > 0 && col.B + col.G == 0;
-                }
-            }
+                BitmapData bitmapData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
 
-            //const PixelFormat pxf = PixelFormat.Format24bppRgb;
-            //var rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
-            //BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.ReadWrite, pxf);
-            //IntPtr ptr = bmpData.Scan0;
-            //
-            //int numBytes = bmpData.Stride*bmp.Height;
-            //int byteOnPixel = bmpData.Stride / bmpData.Width;
-            //var rgbValues = new byte[numBytes];
-            //
-            //Marshal.Copy(ptr, rgbValues, 0, numBytes);
-            //bmp.UnlockBits(bmpData);
-            //
-            //for (int row = 0; row < bmp.Height; row++)
-            //{
-            //    int endByte = (row + 1)*(bmpData.Width*byteOnPixel);
-            //    for (int startByte = row*(bmpData.Width*byteOnPixel), coll = 0;
-            //        startByte < endByte;
-            //        startByte += byteOnPixel, coll++)
-            //    {
-            //        byte colorR = rgbValues[startByte + 2];
-            //        byte colorG = rgbValues[startByte + 1];
-            //        byte colorB = rgbValues[startByte + 0];
-            //        idealStandart.Matrix[coll, row] = (colorB + colorG + colorR) == 0;
-            //        mask.Matrix[coll, row] = colorR == 255 && colorB == 0 && colorG == 0;
-            //    }
-            //}
+                int bytesPerPixel = System.Drawing.Image.GetPixelFormatSize(bmp.PixelFormat) / 8;
+                int heightInPixels = bitmapData.Height;
+                int widthInBytes = bitmapData.Width * bytesPerPixel;
+                byte* ptrFirstPixel = (byte*)bitmapData.Scan0;
+
+                Parallel.For(0, heightInPixels, y =>
+                {
+                    byte* currentLine = ptrFirstPixel + (y * bitmapData.Stride);
+                    for (int x = 0, cell = 0; x < widthInBytes; x = x + bytesPerPixel, cell++)
+                    {
+                        int blue = currentLine[x];
+                        int green = currentLine[x + 1];
+                        int red = currentLine[x + 2];
+                        mask.Matrix[cell, y] = red > 0 && blue + green == 0;
+                        idealStandart.Matrix[cell, y] = red + green + blue == 0 || mask.Matrix[cell, y];
+                    }
+                });
+                bmp.UnlockBits(bitmapData);
+            }
             
             return new Standart(mask, idealStandart);
         }
