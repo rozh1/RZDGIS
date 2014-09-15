@@ -24,10 +24,10 @@ namespace Lab1
 
             foreach (Standart standart in _standarts)
             {
-                if (standart.IdealStandart.MatrixHeight > objectMaxHeight)
-                    objectMaxHeight = standart.IdealStandart.MatrixHeight;
-                if (standart.IdealStandart.MatrixWidth > objectMaxWidth)
-                    objectMaxWidth = standart.IdealStandart.MatrixWidth;
+                if (standart.IdealStandart.Height > objectMaxHeight)
+                    objectMaxHeight = standart.IdealStandart.Height;
+                if (standart.IdealStandart.Width > objectMaxWidth)
+                    objectMaxWidth = standart.IdealStandart.Width;
             }
 
             int rows = bmp.Height / objectMaxHeight;
@@ -84,7 +84,7 @@ namespace Lab1
             unsafe
             {
                 BitmapData bitmapData = bmp.LockBits(
-                    new Rectangle(x, y, standart.IdealStandart.MatrixWidth, standart.IdealStandart.MatrixHeight), 
+                    new Rectangle(x, y, standart.IdealStandart.Width, standart.IdealStandart.Height), 
                     ImageLockMode.ReadWrite, bmp.PixelFormat);
 
                 int bytesPerPixel = System.Drawing.Image.GetPixelFormatSize(bmp.PixelFormat) / 8;

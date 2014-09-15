@@ -43,12 +43,12 @@ namespace Lab1
         {
             var idealStandart = new IdealStandart();
             idealStandart.Matrix = new bool[bmp.Width, bmp.Height];
-            idealStandart.MatrixHeight = bmp.Height; 
-            idealStandart.MatrixWidth = bmp.Width;
+            idealStandart.Height = bmp.Height; 
+            idealStandart.Width = bmp.Width;
             var mask = new Mask();
             mask.Matrix = new bool[bmp.Width, bmp.Height];
-            mask.MatrixHeight = bmp.Height;
-            mask.MatrixWidth = bmp.Width;
+            mask.Height = bmp.Height;
+            mask.Width = bmp.Width;
             
             unsafe
             {
@@ -67,8 +67,8 @@ namespace Lab1
                         int blue = currentLine[x];
                         int green = currentLine[x + 1];
                         int red = currentLine[x + 2];
-                        mask.Matrix[cell, y] = red > 0 && blue + green == 0;
-                        idealStandart.Matrix[cell, y] = red + green + blue == 0 || mask.Matrix[cell, y];
+                        mask.Matrix[cell, y] = red > 0 && blue + green == 0 || green > 0 && blue + red == 0;
+                        idealStandart.Matrix[cell, y] = red + green + blue == 0 || red > 0 && blue + green == 0;
                     }
                 });
                 bmp.UnlockBits(bitmapData);

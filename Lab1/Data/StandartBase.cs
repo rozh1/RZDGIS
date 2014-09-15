@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Lab1.Interfaces;
+﻿using Lab1.Interfaces;
 
 namespace Lab1.Data
 {
@@ -13,8 +8,8 @@ namespace Lab1.Data
     class StandartBase : IStandartBase
     {
         public bool[,] Matrix { get; set; }
-        public int MatrixHeight { get; set; }
-        public int MatrixWidth { get; set; } 
+        public int Height { get; set; }
+        public int Width { get; set; } 
         
     }
 }

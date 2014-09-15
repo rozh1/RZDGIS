@@ -28,10 +28,10 @@ namespace Lab1
 
             foreach (Standart standart in standrtObjects)
             {
-                if (standart.IdealStandart.MatrixHeight > objectMaxHeight)
-                    objectMaxHeight = standart.IdealStandart.MatrixHeight;
-                if (standart.IdealStandart.MatrixWidth > objectMaxWidth)
-                    objectMaxWidth = standart.IdealStandart.MatrixWidth;
+                if (standart.IdealStandart.Height > objectMaxHeight)
+                    objectMaxHeight = standart.IdealStandart.Height;
+                if (standart.IdealStandart.Width > objectMaxWidth)
+                    objectMaxWidth = standart.IdealStandart.Width;
             }
 
             var image = new Bitmap(objectMaxWidth*rows, objectMaxHeight*rows);
@@ -65,10 +65,10 @@ namespace Lab1
 
         private Bitmap GenerateBitmapFromStandart(Standart standart)
         {
-            var bmp = new Bitmap(standart.IdealStandart.MatrixWidth, standart.IdealStandart.MatrixHeight);
+            var bmp = new Bitmap(standart.IdealStandart.Width, standart.IdealStandart.Height);
             Graphics.FromImage(bmp).FillRectangle(
                 new SolidBrush(Color.White), 
-                0, 0, standart.IdealStandart.MatrixWidth, standart.IdealStandart.MatrixHeight);
+                0, 0, standart.IdealStandart.Width, standart.IdealStandart.Height);
 
             unsafe
             {
