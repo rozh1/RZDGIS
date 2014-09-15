@@ -3,10 +3,11 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Threading.Tasks;
 using Lab1.Data;
+using Lab1.Interfaces;
 
 namespace Lab1
 {
-    class Processor
+    class Processor : IProcessor
     {
         private readonly Standart[] _standarts;
 

@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using Lab1.ComandLineParamsParser;
+using Lab1.ComandLineParamsParser.Enums;
+using Lab1.Interfaces;
 
 namespace Lab1
 {
@@ -19,6 +21,7 @@ namespace Lab1
                 Console.WriteLine(@"    --generate, -g  - генерация карты");
                 Console.WriteLine(@"Не обязательные параметры:");
                 Console.WriteLine(@"    --count, -c     - кол-во объектов генерации [10000]");
+                Console.WriteLine(@"    --quick, -q     - использовать быстрый алгорим декодирования");
                 Environment.Exit(-1);
             }
 
@@ -48,13 +51,24 @@ namespace Lab1
 
             if (parser.DecodeImage)
             {
-                var processor = new Processor(standartsLoader.Standarts.StandartConstants);
+                IProcessor processor;
                 bmp = (Bitmap) Image.FromFile(parser.File);
+
+                if (parser.Algorithm == Algorithms.Quick)
+                {
+                    processor = new QuickProcessor(standartsLoader.Standarts.StandartConstants);
+                }
+                else
+                {
+                    processor = new Processor(standartsLoader.Standarts.StandartConstants);
+                }
+
                 sw.Start();
                 string[] result = processor.DecodeImage(bmp);
                 sw.Stop();
                 Console.WriteLine(@"Время декодирования {0} мс", sw.ElapsedMilliseconds);
                 sw.Reset();
+
                 File.WriteAllText(parser.File + ".txt",string.Join(" ", result));
             }
 

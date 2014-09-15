@@ -1,4 +1,5 @@
 ﻿using System;
+using Lab1.ComandLineParamsParser.Enums;
 
 namespace Lab1.ComandLineParamsParser
 {
@@ -21,6 +22,7 @@ namespace Lab1.ComandLineParamsParser
         public bool GenerateImage { get; set; }
         public bool DecodeImage { get; set; }
         public int ObjectCount { get; set; }
+        public Algorithms Algorithm { get; set; }
 
         /// <summary>
         ///     Парсер параметров
@@ -46,6 +48,9 @@ namespace Lab1.ComandLineParamsParser
                     case ComandSwitch.ObjectsCount:
                         CheckArrayLenght(i);
                         ObjectCount = TryParseInt(_args[i + 1]);
+                        break;
+                    case ComandSwitch.QuickAlgorithm:
+                        Algorithm = Algorithms.Quick;
                         break;
                 }
             }

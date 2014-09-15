@@ -1,16 +1,7 @@
-﻿namespace Lab1.ComandLineParamsParser
-{
-    /// <summary>
-    ///     Параметры запуска
-    /// </summary>
-    internal enum ComandSwitch
-    {
-        None,
-        GenerateImage,
-        Image,
-        ObjectsCount
-    }
+﻿using Lab1.ComandLineParamsParser.Enums;
 
+namespace Lab1.ComandLineParamsParser
+{
     /// <summary>
     ///     Ключи параметров
     /// </summary>
@@ -28,6 +19,9 @@
                     return ComandSwitch.Image;
                 case "-c":
                 case "--count":
+                    return ComandSwitch.ObjectsCount;
+                case "-q":
+                case "--quick":
                     return ComandSwitch.ObjectsCount;
                 default:
                     return ComandSwitch.None;
