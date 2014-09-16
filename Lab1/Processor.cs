@@ -64,22 +64,6 @@ namespace Lab1
 
         private bool CompareImageWithStandart(Bitmap bmp, int x, int y, Standart standart)
         {
-            //for (int i = 0; i < standart.IdealStandart.MatrixHeight; i++)
-            //{
-            //    for (int j = 0; j < standart.IdealStandart.MatrixWidth; j++)
-            //    {
-            //        Color col = bmp.GetPixel(x + j, y + i);
-            //        if (!standart.Mask.Matrix[j, i])
-            //        {
-            //            if (standart.IdealStandart.Matrix[j, i] && (col.B + col.G + col.R != 0))
-            //            {
-            //                return false;
-            //            }
-            //            
-            //        }
-            //    }
-            //}
-
             bool ret = true;
 
             unsafe
@@ -93,7 +77,7 @@ namespace Lab1
                 int widthInBytes = bitmapData.Width * bytesPerPixel;
                 byte* ptrFirstPixel = (byte*)bitmapData.Scan0;
 
-                Parallel.For(0, heightInPixels, row =>
+                for (int row = 0; row < heightInPixels; row++)
                 {
                     byte* currentLine = ptrFirstPixel + (row * bitmapData.Stride);
                     for (int startByte = 0, cell = 0; startByte < widthInBytes; startByte = startByte + bytesPerPixel, cell++)
@@ -110,7 +94,7 @@ namespace Lab1
                             }
                         }
                     }
-                });
+                }
                 bmp.UnlockBits(bitmapData);
             }
 
