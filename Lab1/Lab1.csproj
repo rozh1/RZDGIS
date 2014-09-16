@@ -88,6 +88,27 @@
   <ItemGroup>
     <None Include="Resources\standart_3.bmp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\standart_4.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\standart_5.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\standart_6.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\standart_7.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\standart_8.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\standart_9.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\standart_0.bmp" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

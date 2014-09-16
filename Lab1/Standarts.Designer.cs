@@ -63,6 +63,16 @@ namespace Lab1 {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap standart_0 {
+            get {
+                object obj = ResourceManager.GetObject("standart_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap standart_1 {
             get {
                 object obj = ResourceManager.GetObject("standart_1", resourceCulture);
@@ -86,6 +96,66 @@ namespace Lab1 {
         internal static System.Drawing.Bitmap standart_3 {
             get {
                 object obj = ResourceManager.GetObject("standart_3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap standart_4 {
+            get {
+                object obj = ResourceManager.GetObject("standart_4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap standart_5 {
+            get {
+                object obj = ResourceManager.GetObject("standart_5", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap standart_6 {
+            get {
+                object obj = ResourceManager.GetObject("standart_6", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap standart_7 {
+            get {
+                object obj = ResourceManager.GetObject("standart_7", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap standart_8 {
+            get {
+                object obj = ResourceManager.GetObject("standart_8", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap standart_9 {
+            get {
+                object obj = ResourceManager.GetObject("standart_9", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
