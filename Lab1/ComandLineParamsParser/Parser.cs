@@ -51,6 +51,8 @@ namespace Lab1.ComandLineParamsParser
                         break;
                     case ComandSwitch.QuickAlgorithm:
                         Algorithm = Algorithms.Quick;
+                        DecodeImage = true;
+                        File = _args[i + 1];
                         break;
                 }
             }

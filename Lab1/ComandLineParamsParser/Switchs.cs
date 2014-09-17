@@ -22,7 +22,7 @@ namespace Lab1.ComandLineParamsParser
                     return ComandSwitch.ObjectsCount;
                 case "-q":
                 case "--quick":
-                    return ComandSwitch.ObjectsCount;
+                    return ComandSwitch.QuickAlgorithm;
                 default:
                     return ComandSwitch.None;
             }
