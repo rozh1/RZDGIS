@@ -35,10 +35,9 @@ namespace Lab1
             }
 
             var image = new Bitmap(objectMaxWidth*rows, objectMaxHeight*rows);
-            Graphics g = Graphics.FromImage(image);
-
-            for (int i = 0; i < rows; i++)
+            Parallel.For(0,rows,i =>
             {
+                Graphics g = Graphics.FromImage(image);
                 for (int j = 0; j < rows; j++)
                 {
                     if (i*rows + j < objectCount)
@@ -47,7 +46,7 @@ namespace Lab1
                         g.DrawImageUnscaled(GenerateBitmapFromStandart(standart), j*objectMaxWidth, i*objectMaxHeight);
                     }
                 }
-            }
+            });
 
             return image;
         }
@@ -78,8 +77,8 @@ namespace Lab1
                 int heightInPixels = bitmapData.Height;
                 int widthInBytes = bitmapData.Width * bytesPerPixel;
                 byte* ptrFirstPixel = (byte*)bitmapData.Scan0;
-
-                Parallel.For((long) 0, heightInPixels, y =>
+                
+                for (int y = 0; y < heightInPixels; y++)
                 {
                     byte* currentLine = ptrFirstPixel + (y * bitmapData.Stride);
                     for (int x = 0, cell = 0; x < widthInBytes; x = x + bytesPerPixel, cell++)
@@ -111,7 +110,7 @@ namespace Lab1
                         currentLine[x + 1] = (byte)green;
                         currentLine[x + 2] = (byte)red;
                     }
-                });
+                }
                 bmp.UnlockBits(bitmapData);
             }
 
