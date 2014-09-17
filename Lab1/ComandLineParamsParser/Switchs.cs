@@ -14,9 +14,9 @@ namespace Lab1.ComandLineParamsParser
                 case "-g":
                 case "--generate":
                     return ComandSwitch.GenerateImage;
-                case "-i":
-                case "--image":
-                    return ComandSwitch.Image;
+                case "-d":
+                case "--decode":
+                    return ComandSwitch.Decode;
                 case "-c":
                 case "--count":
                     return ComandSwitch.ObjectsCount;

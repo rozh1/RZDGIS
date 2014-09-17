@@ -40,7 +40,7 @@ namespace Lab1.ComandLineParamsParser
                         File = _args[i + 1];
                         GenerateImage = true;
                         break;
-                    case ComandSwitch.Image:
+                    case ComandSwitch.Decode:
                         CheckArrayLenght(i);
                         File = _args[i + 1];
                         DecodeImage = true;

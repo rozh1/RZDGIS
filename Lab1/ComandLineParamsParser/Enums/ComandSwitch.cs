@@ -7,7 +7,7 @@
     {
         None,
         GenerateImage,
-        Image,
+        Decode,
         ObjectsCount,
         QuickAlgorithm
     }
