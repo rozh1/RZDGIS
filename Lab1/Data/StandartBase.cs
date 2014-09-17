@@ -10,6 +10,6 @@ namespace Lab1.Data
         public bool[,] Matrix { get; set; }
         public int Height { get; set; }
         public int Width { get; set; } 
-        
+        public int[][] IncidenceMatrix { get; set; }
     }
 }
