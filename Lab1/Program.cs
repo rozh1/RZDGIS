@@ -56,7 +56,7 @@ namespace Lab1
 
                 if (parser.Algorithm == Algorithms.Quick)
                 {
-                    processor = new QuickProcessor(standartsLoader.Standarts.StandartConstants);
+                    processor = new QuickProcessor(standartsLoader.Standarts);
                 }
                 else
                 {

@@ -11,10 +11,12 @@ namespace Lab1
     class QuickProcessor : IProcessor
     {
         private readonly Standart[] _standarts;
+        private readonly IncedenceMatrix[] _incedenceMatrices;
 
-        public QuickProcessor(Standart[] standarts)
+        public QuickProcessor(Lab1.Data.Standarts standarts)
         {
-            _standarts = standarts;
+            _standarts = standarts.StandartConstants;
+            _incedenceMatrices = standarts.IncedenceMatrixes;
         }
 
         public string[] DecodeImage(Bitmap bmp)
@@ -52,28 +54,30 @@ namespace Lab1
         private bool DecodeSymbol(Bitmap bmp, int x, int y, out string decodedSymbol)
         {
             decodedSymbol = "";
-            foreach (var standart in _standarts)
+            int[] samples = GetSamples(bmp, x, y);
+
+            if (samples.Length > 0)
             {
-                if (CompareImageWithStandart(bmp, x, y, standart))
-                {
-                    decodedSymbol = standart.Symbol;
-                    return true;
-                }
+                decodedSymbol = FindSybolBySamples(samples);
+                return true;
             }
+            
             return false;
         }
 
-        private bool CompareImageWithStandart(Bitmap bmp, int x, int y, Standart standart)
+        private int[] GetSamples(Bitmap bmp, int x, int y)
         {
-            bool ret = true;
+            if (_standarts.Length==0) return new int[0];
+
+            var samples = new List<int>();
 
             unsafe
             {
                 BitmapData bitmapData = bmp.LockBits(
-                    new Rectangle(x, y, standart.IdealStandart.Width, standart.IdealStandart.Height),
+                    new Rectangle(x, y, _standarts[0].IdealStandart.Width, _standarts[0].IdealStandart.Height),
                     ImageLockMode.ReadWrite, bmp.PixelFormat);
 
-                int bytesPerPixel = System.Drawing.Image.GetPixelFormatSize(bmp.PixelFormat) / 8;
+                int bytesPerPixel = Image.GetPixelFormatSize(bmp.PixelFormat) / 8;
                 int heightInPixels = bitmapData.Height;
                 int widthInBytes = bitmapData.Width * bytesPerPixel;
                 byte* ptrFirstPixel = (byte*)bitmapData.Scan0;
@@ -88,31 +92,44 @@ namespace Lab1
                         int green = currentLine[startByte + 1];
                         int red = currentLine[startByte + 2];
 
-                        if (blue+green+red == 0)
+                        if (blue + green + red == 0)
                         {
                             number |= 1 << cell;
                         }
                     }
 
-                    if (!CheckIncedenceMatrix(standart.IdealStandart.IncidenceMatrix[row], number))
-                    {
-                        ret = false;
-                    }
+                    samples.Add(number);
                 }
                 bmp.UnlockBits(bitmapData);
             }
-
-            return ret;
+            return samples.ToArray();
         }
 
-        bool CheckIncedenceMatrix(int[] array, int sample)
+        string FindSybolBySamples(int[] samples)
         {
-            foreach (int i in array)
+            if (_incedenceMatrices.Length == 0) return "NoIncedenceMatrix";
+            
+            for (int i = 0; i < _incedenceMatrices[0].Height; i++)
             {
-                if (i == sample)
-                    return true;
+                if (_incedenceMatrices[0]._matrix[i, samples[0]])
+                {
+                    if (CheckAllIcedenceMatrices(i, samples))
+                    {
+                        return _standarts[i].Symbol;
+                    }
+                }
             }
-            return false;
+
+            return "err";
+        }
+
+        bool CheckAllIcedenceMatrices(int row, int[] samples)
+        {
+            for (int i = 1; i < _incedenceMatrices.Length; i++)
+            {
+                if (!_incedenceMatrices[i]._matrix[row, samples[i]]) return false;
+            }
+            return true;
         }
     }
 }

@@ -9,5 +9,6 @@ namespace Lab1.Data
     class Standarts
     {
         public Standart[] StandartConstants { get; set; }
+        public IncedenceMatrix[] IncedenceMatrixes { get; set; }
     }
 }

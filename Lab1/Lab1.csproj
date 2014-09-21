@@ -50,6 +50,7 @@
     <Compile Include="ComandLineParamsParser\Switchs.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Data\IdealStandart.cs" />
+    <Compile Include="Data\IncedenceMatrix.cs" />
     <Compile Include="Data\Standart.cs" />
     <Compile Include="Data\Standarts.cs" />
     <Compile Include="Helpers\RandomHelper.cs" />

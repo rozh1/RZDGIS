@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Threading.Tasks;
 using Lab1.Data;
 
 namespace Lab1
@@ -9,6 +8,7 @@ namespace Lab1
     internal class StandartsLoader
     {
         public Data.Standarts Standarts { get; private set; }
+        private Data.Standart[] _standarts;
 
         public StandartsLoader()
         {
@@ -17,10 +17,40 @@ namespace Lab1
 
         private Data.Standarts Load()
         {
-            return new Data.Standarts
+            var standarts = new Data.Standarts();
+            standarts.StandartConstants = _standarts = InitStandarts();
+            standarts.IncedenceMatrixes = InitIncedenceMatrixes();
+            return standarts;
+        }
+
+        private IncedenceMatrix[] InitIncedenceMatrixes()
+        {
+            if (_standarts.Length > 0)
             {
-                StandartConstants = InitStandarts()
-            };
+                var incedenceMatrices = new IncedenceMatrix[_standarts[0].IdealStandart.Height];
+                for (int i = 0; i < incedenceMatrices.Length; i++)
+                {
+                    incedenceMatrices[i] = InitIncedenceMatrix(i);
+                }
+                return incedenceMatrices;
+            }
+            return new IncedenceMatrix[0];
+        }
+
+        private IncedenceMatrix InitIncedenceMatrix(int rowNumber)
+        {
+            var incedenceMatrix = new IncedenceMatrix(_standarts.Length,
+                _standarts[0].IdealStandart.Width);
+            bool[,] martix = incedenceMatrix._matrix;
+            for (int i = 0; i < incedenceMatrix.Height; i++)
+            {
+                int[] realises = _standarts[i].IdealStandart.IncidenceMatrix[rowNumber];
+                foreach (int realise in realises)
+                {
+                    martix[i, realise] = true;
+                }
+            }
+            return incedenceMatrix;
         }
 
         private Standart[] InitStandarts()
@@ -56,12 +86,12 @@ namespace Lab1
             {
                 BitmapData bitmapData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
 
-                int bytesPerPixel = System.Drawing.Image.GetPixelFormatSize(bmp.PixelFormat) / 8;
+                int bytesPerPixel = Image.GetPixelFormatSize(bmp.PixelFormat) / 8;
                 int heightInPixels = bitmapData.Height;
                 int widthInBytes = bitmapData.Width * bytesPerPixel;
                 byte* ptrFirstPixel = (byte*)bitmapData.Scan0;
 
-                Parallel.For(0, heightInPixels, y =>
+                for(int y = 0; y < heightInPixels; y++)
                 {
                     var maskRow = new bool[bmp.Width];
                     var standartRow = new bool[bmp.Width];
@@ -77,7 +107,7 @@ namespace Lab1
                     }
 
                     incedenceMatrix[y] = IncedenceMatrixRowFill(maskRow, standartRow);
-                });
+                }
                 bmp.UnlockBits(bitmapData);
             }
             idealStandart.IncidenceMatrix = incedenceMatrix;
