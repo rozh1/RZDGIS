@@ -17,11 +17,12 @@ namespace Lab1
                 Console.WriteLine(@"Использование программы {0}:", AppDomain.CurrentDomain.FriendlyName);
                 Console.WriteLine(@"{0} --generate image.bmp", AppDomain.CurrentDomain.FriendlyName);
                 Console.WriteLine(@"{0} --decode image.bmp", AppDomain.CurrentDomain.FriendlyName);
+                Console.WriteLine(@"{0} --quick image.bmp", AppDomain.CurrentDomain.FriendlyName);
                 Console.WriteLine(@"    --decode, -d    - картинка для декодирования");
                 Console.WriteLine(@"    --generate, -g  - генерация карты");
+                Console.WriteLine(@"    --quick, -q     - использовать быстрый алгорим декодирования");
                 Console.WriteLine(@"Не обязательные параметры:");
                 Console.WriteLine(@"    --count, -c     - кол-во объектов генерации [10000]");
-                Console.WriteLine(@"    --quick, -q     - использовать быстрый алгорим декодирования");
                 Environment.Exit(-1);
             }
 
