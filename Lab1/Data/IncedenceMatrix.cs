@@ -26,7 +26,7 @@ namespace Lab1.Data
         public IncedenceMatrix(int objectsCount, int symbolWidth)
         {
             _height = objectsCount;
-            _width = (int) Math.Pow(symbolWidth, 2);
+            _width = (int) Math.Pow(2, symbolWidth);
             _matrix = new bool[_height,_width];
         }
     }
