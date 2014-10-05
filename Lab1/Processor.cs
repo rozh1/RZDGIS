@@ -1,57 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
-using System.Threading.Tasks;
 using Lab1.Data;
-using Lab1.Interfaces;
 
 namespace Lab1
 {
-    class Processor : IProcessor
+    internal class Processor : ProcessorBase
     {
-        private readonly Standart[] _standarts;
-
         public Processor(Standart[] standarts)
         {
-            _standarts = standarts;
+            Standarts = standarts;
         }
 
-        public string[] DecodeImage(Bitmap bmp)
-        {
-            var decodedSymbolsList = new List<string>();
-
-            int objectMaxHeight = 0;
-            int objectMaxWidth = 0;
-
-            foreach (Standart standart in _standarts)
-            {
-                if (standart.IdealStandart.Height > objectMaxHeight)
-                    objectMaxHeight = standart.IdealStandart.Height;
-                if (standart.IdealStandart.Width > objectMaxWidth)
-                    objectMaxWidth = standart.IdealStandart.Width;
-            }
-
-            int rows = bmp.Height / objectMaxHeight;
-            int colls = bmp.Width / objectMaxWidth;
-
-            for (int i = 0; i < rows; i++)
-            {
-                for (int j = 0; j < colls; j++)
-                {
-                    int x = j*objectMaxWidth;
-                    int y = i*objectMaxHeight;
-                    string symbol;
-                    decodedSymbolsList.Add(DecodeSymbol(bmp, x, y, out symbol) ? symbol : "ERR");
-                }
-            }
-
-            return decodedSymbolsList.ToArray();
-        }
-
-        private bool DecodeSymbol(Bitmap bmp, int x, int y, out string decodedSymbol)
+        protected override bool DecodeSymbol(Bitmap bmp, int x, int y, out string decodedSymbol)
         {
             decodedSymbol = "";
-            foreach (var standart in _standarts)
+            foreach (Standart standart in Standarts)
             {
                 if (CompareImageWithStandart(bmp, x, y, standart))
                 {
@@ -69,18 +32,20 @@ namespace Lab1
             unsafe
             {
                 BitmapData bitmapData = bmp.LockBits(
-                    new Rectangle(x, y, standart.IdealStandart.Width, standart.IdealStandart.Height), 
+                    new Rectangle(x, y, standart.IdealStandart.Width, standart.IdealStandart.Height),
                     ImageLockMode.ReadWrite, bmp.PixelFormat);
 
-                int bytesPerPixel = System.Drawing.Image.GetPixelFormatSize(bmp.PixelFormat) / 8;
+                int bytesPerPixel = Image.GetPixelFormatSize(bmp.PixelFormat)/8;
                 int heightInPixels = bitmapData.Height;
-                int widthInBytes = bitmapData.Width * bytesPerPixel;
-                byte* ptrFirstPixel = (byte*)bitmapData.Scan0;
+                int widthInBytes = bitmapData.Width*bytesPerPixel;
+                var ptrFirstPixel = (byte*) bitmapData.Scan0;
 
                 for (int row = 0; row < heightInPixels; row++)
                 {
-                    byte* currentLine = ptrFirstPixel + (row * bitmapData.Stride);
-                    for (int startByte = 0, cell = 0; startByte < widthInBytes; startByte = startByte + bytesPerPixel, cell++)
+                    byte* currentLine = ptrFirstPixel + (row*bitmapData.Stride);
+                    for (int startByte = 0, cell = 0;
+                        startByte < widthInBytes;
+                        startByte = startByte + bytesPerPixel, cell++)
                     {
                         int blue = currentLine[startByte];
                         int green = currentLine[startByte + 1];
@@ -88,12 +53,14 @@ namespace Lab1
 
                         if (!standart.Mask.Matrix[cell, row])
                         {
-                            if (standart.IdealStandart.Matrix[cell, row] && (blue + green + red != 0))
+                            if (standart.IdealStandart.Matrix[cell, row] != (blue + green + red == 0))
                             {
                                 ret = false;
+                                break;
                             }
                         }
                     }
+                    if (!ret) break;
                 }
                 bmp.UnlockBits(bitmapData);
             }

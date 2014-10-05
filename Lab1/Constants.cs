@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Lab1
+﻿namespace Lab1
 {
-    static class Constants
+    internal static class Constants
     {
-        public static string[] StandartResourseNames = new[]
+        public static string[] StandartResourseNames =
         {
             "standart_1",
             "standart_2",
@@ -19,10 +13,10 @@ namespace Lab1
             "standart_7",
             "standart_8",
             "standart_9",
-            "standart_0",
+            "standart_0"
         };
 
-        public static string[] StandartSymbols = new[]
+        public static string[] StandartSymbols =
         {
             "1",
             "2",
@@ -33,7 +27,7 @@ namespace Lab1
             "7",
             "8",
             "9",
-            "0",
+            "0"
         };
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Threading.Tasks;
 using Lab1.Data;
 using Lab1.Helpers;
 
@@ -35,7 +34,7 @@ namespace Lab1
             }
 
             var image = new Bitmap(objectMaxWidth*rows, objectMaxHeight*rows);
-            Parallel.For(0,rows,i =>
+            for (int i = 0; i < rows; i++)
             {
                 Graphics g = Graphics.FromImage(image);
                 for (int j = 0; j < rows; j++)
@@ -46,7 +45,7 @@ namespace Lab1
                         g.DrawImageUnscaled(GenerateBitmapFromStandart(standart), j*objectMaxWidth, i*objectMaxHeight);
                     }
                 }
-            });
+            }
 
             return image;
         }
@@ -66,21 +65,22 @@ namespace Lab1
         {
             var bmp = new Bitmap(standart.IdealStandart.Width, standart.IdealStandart.Height);
             Graphics.FromImage(bmp).FillRectangle(
-                new SolidBrush(Color.White), 
+                new SolidBrush(Color.White),
                 0, 0, standart.IdealStandart.Width, standart.IdealStandart.Height);
 
             unsafe
             {
-                BitmapData bitmapData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
+                BitmapData bitmapData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite,
+                    bmp.PixelFormat);
 
-                int bytesPerPixel = System.Drawing.Image.GetPixelFormatSize(bmp.PixelFormat) / 8;
+                int bytesPerPixel = Image.GetPixelFormatSize(bmp.PixelFormat)/8;
                 int heightInPixels = bitmapData.Height;
-                int widthInBytes = bitmapData.Width * bytesPerPixel;
-                byte* ptrFirstPixel = (byte*)bitmapData.Scan0;
-                
+                int widthInBytes = bitmapData.Width*bytesPerPixel;
+                var ptrFirstPixel = (byte*) bitmapData.Scan0;
+
                 for (int y = 0; y < heightInPixels; y++)
                 {
-                    byte* currentLine = ptrFirstPixel + (y * bitmapData.Stride);
+                    byte* currentLine = ptrFirstPixel + (y*bitmapData.Stride);
                     for (int x = 0, cell = 0; x < widthInBytes; x = x + bytesPerPixel, cell++)
                     {
                         int blue = 0;
@@ -106,9 +106,9 @@ namespace Lab1
                                 red = 255;
                             }
                         }
-                        currentLine[x] = (byte)blue;
-                        currentLine[x + 1] = (byte)green;
-                        currentLine[x + 2] = (byte)red;
+                        currentLine[x] = (byte) blue;
+                        currentLine[x + 1] = (byte) green;
+                        currentLine[x + 2] = (byte) red;
                     }
                 }
                 bmp.UnlockBits(bitmapData);

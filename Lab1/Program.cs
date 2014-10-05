@@ -8,9 +8,9 @@ using Lab1.Interfaces;
 
 namespace Lab1
 {
-    static class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             if (args.Length < 2)
             {
@@ -70,9 +70,8 @@ namespace Lab1
                 Console.WriteLine(@"Время декодирования {0} мс", sw.ElapsedMilliseconds);
                 sw.Reset();
 
-                File.WriteAllText(parser.File + ".txt",string.Join(" ", result));
+                File.WriteAllText(parser.File + ".txt", string.Join(" ", result));
             }
-
         }
     }
 }

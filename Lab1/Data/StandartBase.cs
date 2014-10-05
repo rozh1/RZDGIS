@@ -3,13 +3,13 @@
 namespace Lab1.Data
 {
     /// <summary>
-    /// Базовый класс эталонов
+    ///     Базовый класс эталонов
     /// </summary>
-    class StandartBase : IStandartBase
+    internal class StandartBase : IStandartBase
     {
-        public bool[,] Matrix { get; set; }
         public int Height { get; set; }
-        public int Width { get; set; } 
+        public int Width { get; set; }
         public int[][] IncidenceMatrix { get; set; }
+        public bool[,] Matrix { get; set; }
     }
 }
